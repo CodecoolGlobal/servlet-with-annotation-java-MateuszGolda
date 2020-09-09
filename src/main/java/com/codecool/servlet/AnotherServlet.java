@@ -5,27 +5,28 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.PrintWriter;
 
 @WebServlet(name = "anotherServlet", urlPatterns = {"/another"}, loadOnStartup = 2)
 public class AnotherServlet extends HttpServlet {
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        PrintWriter out = response.getWriter();
-
-        StringBuffer buffer = new StringBuffer();
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        StringBuilder builder = new StringBuilder();
         for (int i = 0; i < 10; i++) {
-            buffer.append("<div>");
-            buffer.append("<a href=\"/another?link_id=" + i + "\">");
-            buffer.append("Hello " + i + ". link:");
-            buffer.append("</a>");
-            buffer.append("</div>");
+            builder.append("<div>")
+                    .append("<a href=\"/another?link_id=")
+                    .append(i)
+                    .append("\">")
+                    .append("Hello ")
+                    .append(i)
+                    .append(". link:")
+                    .append("</a>")
+                    .append("</div>");
         }
 
-        String linkId = request.getParameter("link_id");
+        String linkId = req.getParameter("link_id");
 
-        out.println(
+        resp.getWriter().println(
                 "<html>\n" +
                         "<head><title>Another page</title></head>\n" +
                         "<body>\n" +
@@ -34,7 +35,7 @@ public class AnotherServlet extends HttpServlet {
                                 "<h3>No link was pressed</h3>" :
                                 "<h3>Link " + linkId + " was pressed!</h3>") +
                         "<br/>" +
-                        "<div>" + buffer.toString() + "</div>" +
+                        "<div>" + builder.toString() + "</div>" +
                         "</body></html>"
         );
     }
